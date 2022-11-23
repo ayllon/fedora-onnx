@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index c11ae31f..4d16db7e 100644
+--- a/setup.py
++++ b/setup.py
+@@ -351,7 +351,7 @@ setuptools.setup(
+         "console_scripts": [
+             "check-model = onnx.bin.checker:check_model",
+             "check-node = onnx.bin.checker:check_node",
+-            "backend-test-tools = onnx.backend.test.cmd_tools:main",
++#            "backend-test-tools = onnx.backend.test.cmd_tools:main",
+         ]
+     },
+ )
