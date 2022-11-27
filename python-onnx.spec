@@ -10,6 +10,9 @@ Patch0:     onnx-tox.patch
 # Do not install script oriented towards onnx contributors
 Patch1:     onnx-disable-test-tools.patch
 
+# Architecture not supported: lots of "unsupported adapters" errors
+ExcludeArch:    s390x
+
 BuildRequires:  cmake >= 3.13
 BuildRequires:  make
 BuildRequires:  gcc
