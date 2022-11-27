@@ -5,9 +5,9 @@ Summary:    Open standard for machine learning interoperability
 License:    ASL 2.0
 URL:        https://github.com/onnx/onnx
 Source0:    https://github.com/onnx/onnx/archive/v%{version}/%{name}-%{version}.tar.gz
-# Add what is missing to run tox
+# Add what is missing to run tox, disable tests that require network
 Patch0:     onnx-tox.patch
-# Do not install script oriented for onnx contributors
+# Do not install script oriented towards onnx contributors
 Patch1:     onnx-disable-test-tools.patch
 
 BuildRequires:  cmake >= 3.13
