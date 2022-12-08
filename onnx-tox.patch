@@ -1,5 +1,11 @@
+commit 2fdcb71a44c05c2188ae52bfd363479418c8b477
+Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
+Date:   Thu Dec 8 22:26:12 2022 +0100
+
+    Fix setup.cfg to run during packaging
+
 diff --git a/setup.cfg b/setup.cfg
-index 219f65b8..aa09ce88 100644
+index 219f65b8..c2cf576e 100644
 --- a/setup.cfg
 +++ b/setup.cfg
 @@ -1,11 +1,18 @@
@@ -23,12 +29,3 @@ index 219f65b8..aa09ce88 100644
  
  [metadata]
  license_files = LICENSE
-@@ -50,7 +57,7 @@ warn_no_return = True
- warn_redundant_casts = True
- warn_incomplete_stub = True
- # TODO disallow_untyped_calls = True
--check_untyped_defs = True
-+eck_untyped_defs = True
- disallow_any_generics = True
- no_implicit_optional = True
- # TODO disallow_incomplete_defs = True

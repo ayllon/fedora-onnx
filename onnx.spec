@@ -1,20 +1,21 @@
-Name:       python-onnx
+Name:       onnx
 Version:    1.12.0
 Release:    1%{?dist}
 Summary:    Open standard for machine learning interoperability
 License:    ASL 2.0
 URL:        https://github.com/onnx/onnx
 Source0:    https://github.com/onnx/onnx/archive/v%{version}/%{name}-%{version}.tar.gz
+# Build shared libraries and fix install location 
+Patch0:     onnx-install.patch
 # Add what is missing to run tox, disable tests that require network
-Patch0:     onnx-tox.patch
-# Do not install script oriented towards onnx contributors
-Patch1:     onnx-disable-test-tools.patch
+Patch1:     onnx-tox.patch
 
 # Architecture not supported: lots of "unsupported adapters" errors
 ExcludeArch:    s390x
 
 BuildRequires:  cmake >= 3.13
 BuildRequires:  make
+BuildRequires:  findutils
 BuildRequires:  gcc
 BuildRequires:  gcc-c++
 BuildRequires:  zlib-devel
@@ -30,8 +31,19 @@ definitions of built-in operators and standard data types.}
 
 %description %_description
 
+%package libs
+Summary:    Libraries for %{name}
+
+%description libs %_description
+
+%package devel
+Summary:    Development files for %{name}
+Requires:   %{name}-libs = %{version}-%{release} 
+
+%description devel %_description
+
 %package -n python3-onnx
-Summary:        %{summary}
+Summary:    %{summary}
 
 %description -n python3-onnx %_description
 
@@ -42,19 +54,40 @@ Summary:        %{summary}
 %pyproject_buildrequires -t
 
 %build
-export CMAKE_ARGS="-DONNX_USE_LITE_PROTO=ON -DONNX_USE_PROTOBUF_SHARED_LIBS=ON"
-%pyproject_wheel
+%cmake \
+    -DONNX_USE_LITE_PROTO=ON \
+    -DONNX_USE_PROTOBUF_SHARED_LIBS=ON \
+    -DBUILD_ONNX_PYTHON=ON \
+    -DPYTHON_EXECUTABLE=%{python3} \
+    -DPY_EXT_SUFFIX=%{python3_ext_suffix} \
+    -DPY_SITEARCH=%{python3_sitearch}
+%cmake_build
 
 %install
-%pyproject_install
-%pyproject_save_files onnx
+%cmake_install
+# Need to remove empty directories
+find "%{buildroot}/%{_includedir}" -type d -empty -delete
+find "%{buildroot}/%{python3_sitearch}" -type d -empty -delete
 
 %check
 %tox
 
-%files -n python3-onnx -f %{pyproject_files}
-%{_bindir}/check-model
-%{_bindir}/check-node
+%files libs
+%license LICENSE
+%doc README.md
+%{_libdir}/libonnxifi.so.*
+%{_libdir}/libonnx.so.*
+%{_libdir}/libonnx_proto.so.*
+
+%files devel
+%{_libdir}/libonnxifi.so
+%{_libdir}/libonnx.so
+%{_libdir}/libonnx_proto.so
+%dir %{_libdir}/cmake/ONNX
+%dir %{_includedir}/onnx/
+
+%files -n python3-onnx
+%dir %{python3_sitearch}/onnx/
 
 %changelog
 * Wed Nov 23 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 1.12.0-1
