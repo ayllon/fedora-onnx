@@ -85,19 +85,17 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 %files libs
 %license LICENSE
 %doc README.md
-%{_libdir}/libonnxifi.so.*
 %{_libdir}/libonnx.so.*
 %{_libdir}/libonnx_proto.so.*
 
 %files devel
-%{_libdir}/libonnxifi.so
 %{_libdir}/libonnx.so
 %{_libdir}/libonnx_proto.so
-%dir %{_libdir}/cmake/ONNX
-%dir %{_includedir}/onnx/
+%{_libdir}/cmake/ONNX
+%{_includedir}/%{name}/
 
 %files -n python3-onnx
-%dir %{python3_sitearch}/%{name}/
+%{python3_sitearch}/%{name}/
 
 %changelog
 * Wed Nov 23 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 1.12.0-1

@@ -1,11 +1,11 @@
-commit c82c3405111537d91a098bc93e608b89ae20e707
+commit 62e47a470ea4bed92077fff03b731e99989707be
 Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
 Date:   Thu Dec 8 22:26:12 2022 +0100
 
     Fix setup.cfg to run during packaging
 
 diff --git a/setup.cfg b/setup.cfg
-index b8983afe..4ddac3ae 100644
+index b8983afe..a2db6305 100644
 --- a/setup.cfg
 +++ b/setup.cfg
 @@ -1,11 +1,18 @@
@@ -24,7 +24,7 @@ index b8983afe..4ddac3ae 100644
  [tool:pytest]
 -addopts = --nbval --current-env
 -testpaths = onnx/test onnx/examples
-+addopts = --ignore=onnx/test/test_backend_test.py
++addopts = --ignore=onnx/test/test_backend_test.py --ignore=onnx/test/reference_evaluator_backend_test.py
 +testpaths = onnx/test
  
  [metadata]

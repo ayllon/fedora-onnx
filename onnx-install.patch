@@ -1,11 +1,11 @@
-commit 43f2ed5e1d72ee95b8655906f41aef77bdfbe78f
+commit 7e128fee37ef418248aee2c2fdd72c2c4eed2cc7
 Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
 Date:   Thu Dec 8 21:33:23 2022 +0100
 
     Build shared libraries, fix install
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4dd56b6e..5bad8cf8 100644
+index 4dd56b6e..7f79cc9a 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -367,7 +367,7 @@ list(REMOVE_ITEM __tmp_srcs "${ONNX_ROOT}/onnx/cpp2py_export.cc")
@@ -17,16 +17,27 @@ index 4dd56b6e..5bad8cf8 100644
  add_dependencies(onnx_proto gen_onnx_operators_proto gen_onnx_data_proto)
  target_include_directories(onnx_proto PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-@@ -423,7 +423,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "AIX")
+@@ -400,6 +400,8 @@ else()
+   set(ONNX_API_DEFINE "-DONNX_API=__attribute__\(\(__visibility__\(\"default\"\)\)\)")
+   set_target_properties(onnx_proto PROPERTIES CXX_VISIBILITY_PRESET hidden)
+   set_target_properties(onnx_proto PROPERTIES VISIBILITY_INLINES_HIDDEN 1)
++  set_target_properties(onnx_proto PROPERTIES VERSION ${ONNX_VERSION}
++                                            SOVERSION ${ONNX_VERSION})
+ endif()
+ target_compile_definitions(onnx_proto PRIVATE ${ONNX_API_DEFINE})
+ 
+@@ -423,7 +425,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "AIX")
    # So, create a object library
    add_library(onnx OBJECT ${ONNX_SRCS})
  else()
 -  add_library(onnx ${ONNX_SRCS})
 +  add_library(onnx SHARED ${ONNX_SRCS})
++  set_target_properties(onnx PROPERTIES VERSION ${ONNX_VERSION}
++                                        SOVERSION ${ONNX_VERSION})
  endif()
  
  target_include_directories(onnx PUBLIC
-@@ -606,6 +606,17 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/onnx
+@@ -606,6 +610,17 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/onnx
          FILES_MATCHING
          PATTERN "*.h")
  
@@ -44,7 +55,7 @@ index 4dd56b6e..5bad8cf8 100644
  configure_file(
    ${PROJECT_SOURCE_DIR}/cmake/ONNXConfigVersion.cmake.in
    ${PROJECT_BINARY_DIR}/ONNXConfigVersion.cmake
-@@ -623,6 +634,9 @@ install(EXPORT ONNXTargets DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/ONNX")
+@@ -623,6 +638,9 @@ install(EXPORT ONNXTargets DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/ONNX")
  install(TARGETS
    onnx onnx_proto
    EXPORT ONNXTargets DESTINATION ${CMAKE_INSTALL_LIBDIR})
