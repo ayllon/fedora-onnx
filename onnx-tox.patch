@@ -1,11 +1,11 @@
-commit 2fdcb71a44c05c2188ae52bfd363479418c8b477
+commit c82c3405111537d91a098bc93e608b89ae20e707
 Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
 Date:   Thu Dec 8 22:26:12 2022 +0100
 
     Fix setup.cfg to run during packaging
 
 diff --git a/setup.cfg b/setup.cfg
-index 219f65b8..c2cf576e 100644
+index b8983afe..4ddac3ae 100644
 --- a/setup.cfg
 +++ b/setup.cfg
 @@ -1,11 +1,18 @@

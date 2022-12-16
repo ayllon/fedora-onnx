@@ -1,0 +1,9 @@
+diff --git a/requirements.txt b/requirements.txt
+index 5e98ada0..a86af5e3 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,3 +1,3 @@
+ numpy >= 1.16.6 # TODO: update once TensorFlow 2.6 is end of life
+-protobuf >= 3.20.2, < 4
++protobuf >= 3.19.4, < 4
+ typing-extensions >= 3.6.2.1

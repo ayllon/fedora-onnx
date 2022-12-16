@@ -1,14 +1,14 @@
-commit dbc7dffc7b9ca63e72ebe51c9137f286bfe77c7e
+commit 43f2ed5e1d72ee95b8655906f41aef77bdfbe78f
 Author: Alejandro Alvarez Ayllon <a.alvarezayllon@gmail.com>
 Date:   Thu Dec 8 21:33:23 2022 +0100
 
     Build shared libraries, fix install
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index f914e78b..3167e6b8 100644
+index 4dd56b6e..5bad8cf8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -363,7 +363,7 @@ list(REMOVE_ITEM __tmp_srcs "${ONNX_ROOT}/onnx/cpp2py_export.cc")
+@@ -367,7 +367,7 @@ list(REMOVE_ITEM __tmp_srcs "${ONNX_ROOT}/onnx/cpp2py_export.cc")
  list(REMOVE_ITEM __tmp_srcs ${onnx_gtests_src})
  list(APPEND ONNX_SRCS ${__tmp_srcs})
  
@@ -17,7 +17,7 @@ index f914e78b..3167e6b8 100644
  add_dependencies(onnx_proto gen_onnx_operators_proto gen_onnx_data_proto)
  target_include_directories(onnx_proto PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-@@ -419,7 +419,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "AIX")
+@@ -423,7 +423,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "AIX")
    # So, create a object library
    add_library(onnx OBJECT ${ONNX_SRCS})
  else()
@@ -26,7 +26,7 @@ index f914e78b..3167e6b8 100644
  endif()
  
  target_include_directories(onnx PUBLIC
-@@ -675,6 +675,12 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/onnx
+@@ -606,6 +606,17 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/onnx
          FILES_MATCHING
          PATTERN "*.h")
  
@@ -35,22 +35,22 @@ index f914e78b..3167e6b8 100644
 +        FILES_MATCHING
 +        PATTERN "*.py"
 +        PATTERN "test/*" EXCLUDE )
++install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/onnx
++        DESTINATION  "${PY_SITEARCH}"
++        FILES_MATCHING
++        PATTERN "*.py"
++        PATTERN "test/*" EXCLUDE )
 +
  configure_file(
    ${PROJECT_SOURCE_DIR}/cmake/ONNXConfigVersion.cmake.in
    ${PROJECT_BINARY_DIR}/ONNXConfigVersion.cmake
-@@ -693,10 +699,13 @@ install(TARGETS
+@@ -623,6 +634,9 @@ install(EXPORT ONNXTargets DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/ONNX")
+ install(TARGETS
    onnx onnx_proto
-   onnxifi onnxifi_dummy onnxifi_loader
    EXPORT ONNXTargets DESTINATION ${CMAKE_INSTALL_LIBDIR})
 +install(TARGETS
 +  onnx_cpp2py_export
 +  DESTINATION "${PY_SITEARCH}/onnx")
  
- if(NOT ANDROID AND NOT IOS)
-   install(TARGETS onnxifi_wrapper
--    EXPORT ONNXTargets DESTINATION lib)
-+    EXPORT ONNXTargets DESTINATION ${CMAKE_INSTALL_LIBDIR})
- endif()
- 
- if(ONNXIFI_DUMMY_BACKEND)
+ if(ONNX_BUILD_TESTS)
+   include(${ONNX_ROOT}/cmake/unittest.cmake)
