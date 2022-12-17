@@ -2,7 +2,7 @@
 
 Name:       onnx
 Version:    1.13.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Open standard for machine learning interoperability
 License:    ASL 2.0
 URL:        https://github.com/onnx/onnx
