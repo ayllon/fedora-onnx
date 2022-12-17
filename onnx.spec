@@ -77,8 +77,11 @@ cat > "%{buildroot}/%{python3_sitearch}/%{name}/version.py" <<EOF
 version = "%{version}"
 git_version = "%{git_version}"
 EOF
+# Executable modules
 chmod a+x "%{buildroot}/%{python3_sitearch}/%{name}/gen_proto.py"
 chmod a+x "%{buildroot}/%{python3_sitearch}/%{name}/defs/gen_doc.py"
+%py3_shebang_fix "%{buildroot}/%{python3_sitearch}/%{name}/gen_proto.py"
+%py3_shebang_fix "%{buildroot}/%{python3_sitearch}/%{name}/defs/gen_doc.py"
 
 %check
 export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
