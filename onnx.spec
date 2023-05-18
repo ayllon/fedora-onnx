@@ -2,9 +2,10 @@
 
 Name:       onnx
 Version:    1.13.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Open standard for machine learning interoperability
-License:    ASL 2.0
+License:    Apache-2.0
+
 URL:        https://github.com/onnx/onnx
 Source0:    https://github.com/onnx/onnx/archive/v%{version}/%{name}-%{version}.tar.gz
 # Build shared libraries and fix install location 
@@ -48,6 +49,7 @@ Requires:   %{name}-libs = %{version}-%{release}
 
 %package -n python3-onnx
 Summary:    %{summary}
+Requires:   %{name}-libs = %{version}-%{release}
 
 %description -n python3-onnx %_description
 
@@ -103,6 +105,10 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 %{python3_sitearch}/%{name}/
 
 %changelog
+* Thu May 18 2023 Diego Herrera <dherrera@redhat.com> - 1.13.0-3
+- Fix License entry to comply with SPDX
+- Add onnx-libs as an explicit dependency to the python package
+
 * Sat Dec 17 2022 Alejandro Alvarez Ayllon <aalvarez@fedoraproject.org> - 1.13.0-2
 - Release 1.13.0
 
